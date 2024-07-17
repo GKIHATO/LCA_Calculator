@@ -1,3 +1,3 @@
-This iss the LCA Calculator source code/n
-Still under intensive testing/n
+This iss the LCA Calculator source code, 
+Still under intensive testing, 
 Please contact g.tong@uq.edu.au for more infomation
