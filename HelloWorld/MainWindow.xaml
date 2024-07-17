@@ -1,0 +1,243 @@
+﻿<UserControl x:Class="HelloWorld.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HelloWorld"
+        mc:Ignorable="d"
+        MinWidth="600" Width="600" Unloaded="UserControl_Unloaded">
+    <UserControl.Resources>
+        <!-- Custom CheckBox Style -->
+        <Style x:Key="CustomCheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Grid>
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" SnapsToDevicePixels="true">
+                                <Grid>
+                                    <Rectangle x:Name="PART_Checkmark" Width="20" Height="20" Stroke="Black" Fill="Transparent" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="PART_Checkmark" Property="Fill" Value="Black"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PART_Checkmark" Property="Stroke" Value="Red"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="PART_Checkmark" Property="Stroke" Value="Blue"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+       <!-- <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/> -->
+    </UserControl.Resources>
+    <Grid MinWidth="600">
+        <TabControl MinWidth="600">
+            <TabItem x:Name="Info" Header="About">
+                <StackPanel Orientation="Vertical" MaxWidth="500">
+                    <Label FontSize="20" Margin="10" HorizontalAlignment="Center" Content="LCA Calculator Ver 1.0.0"></Label>
+                    <TextBlock TextWrapping="Wrap" Text="This the prototype devedloped by Guangyu Rong for research and demostration purpose.
+                               Contact: Guangyu Rong                                               
+                               Email: g.rong@uqconnect.edu.au
+                               Address: 49 AEB Building, St Lucia, QLD 4067, Australia" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15">
+                    </TextBlock>
+                    <Button x:Name="openLCA" Width="400" Height="250" Click="openLCA_Click" BorderBrush="White" >
+                        <Image x:Name="ImagePath" Source="pack://application:,,,/HelloWorld;component/Resources/openLCA.png" Width="400"></Image>
+                    </Button>
+                    <TextBlock TextWrapping="Wrap" Margin="15" FontSize="14" FontStyle="Italic" FontFamily="Arial" TextAlignment="Center" Foreground="Purple" >
+                            Powered by OpenLCA
+                    </TextBlock>
+                </StackPanel>
+            </TabItem>
+            <TabItem x:Name="projectInfo" Header="Project Info">
+                <StackPanel Orientation="Vertical" MaxWidth="600">
+                    <Label Content="Please check the project info shown below: " FontSize="18" FontWeight="Bold" Margin="10" HorizontalAlignment="left"></Label>
+                    <Grid Margin="0,10,10,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="145"></ColumnDefinition>
+                            <ColumnDefinition Width="15"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="Project Name: " FontSize="16" ></Label>
+                            <Label Content="Project Address: " FontSize="16" ></Label>
+                            <Label Content="Start Date: " FontSize="16" ></Label>
+                            <Label Content="End Date: " FontSize="16" ></Label>
+                            <Label Content="Building Type: " FontSize="16" ></Label>
+                            <Label Content="Structure Type: " FontSize="16" ></Label>
+                            <Label Content="Number of Stories: " FontSize="16" ></Label>
+                            <Label Content="Total Area: " FontSize="16" ></Label>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Grid.Column="2">
+                            <TextBox Height="26" x:Name="projectName" Margin="0,5,0,5" FontSize="16" ></TextBox>
+                            <TextBox Height="26" x:Name="projectAddress" Margin="0,0,0,5" FontSize="16"></TextBox>
+                            <TextBox Height="26" x:Name="startDate" Margin="0,0,0,5" FontSize="16"></TextBox>
+                            <TextBox Height="26" x:Name="endDate" Margin="0,0,0,5" FontSize="16"></TextBox>
+                            <TextBox Height="26" x:Name="buildingType" Margin="0,0,0,5" FontSize="16"></TextBox>
+                            <TextBox Height="26" x:Name="structureType" Margin="0,0,0,5" FontSize="16"></TextBox>
+                            <TextBox Height="26" x:Name="numOfStorey" Margin="0,0,0,5" FontSize="16"></TextBox>
+                            <TextBox Height="26" x:Name="totalArea" Margin="0,0,0,5" FontSize="16"></TextBox>
+                        </StackPanel>
+
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+            <TabItem x:Name="calculateModule" Header="Analysis">
+                <StackPanel Orientation="Vertical" MinWidth="600">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="75"></ColumnDefinition>
+                            <ColumnDefinition Width="30"></ColumnDefinition>
+                            <ColumnDefinition Width="48"></ColumnDefinition>
+                            <ColumnDefinition Width="30"></ColumnDefinition>
+                            <ColumnDefinition Width="48"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label FontSize="18" Margin="15,10,15,10" FontWeight="DemiBold" HorizontalAlignment="left" Content="Caculation Module: "></Label>
+                        <CheckBox x:Name="calculate_A1_A3" Content="A1-A3" Width="75"  BorderBrush="Transparent" Style="{StaticResource CustomCheckBoxStyle}" VerticalAlignment="Center" FontSize="18" Grid.Column="2"></CheckBox>
+                        <CheckBox x:Name="calculate_A4" Content="A4" Width="48" BorderBrush="Transparent" Style="{StaticResource CustomCheckBoxStyle}" VerticalAlignment="Center" FontSize="18" Grid.Column="4"></CheckBox>
+                        <CheckBox x:Name="calculate_A5" Content="A5" Width="48" BorderBrush="Transparent" Style="{StaticResource CustomCheckBoxStyle}" VerticalAlignment="Center" FontSize="18" Grid.Column="6"></CheckBox>
+                    </Grid>
+                    <Grid ToolTip="Choose between two different sampling method">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="145"></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="85"></ColumnDefinition>
+                            <ColumnDefinition Width="30"></ColumnDefinition>
+                            <ColumnDefinition Width="70"></ColumnDefinition>
+                            <ColumnDefinition Width="30"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label FontSize="18" Margin="15,0,0,10" FontWeight="DemiBold" HorizontalAlignment="left" Content="Sampling Size: " Grid.Column="0"></Label>
+                        <TextBox x:Name="samplingSize" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Text="0" PreviewTextInput="TextBox_PreviewTextInput" Margin="0,0,0,10" HorizontalAlignment="Left" Width="80" FontSize="18"  ToolTip="Please enter the number (percentage) directly, " Grid.Column="1"></TextBox>
+                        <Label FontSize="18" Margin="0,0,0,10" FontWeight="DemiBold" HorizontalAlignment="left" Content="By Num: " Grid.Column="2"></Label>
+                        <CheckBox IsThreeState="False" x:Name="byNum" Checked="byNum_Checked" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,10" ToolTip="Sampling data by a fix number" Grid.Column="3"></CheckBox>
+                        <Label FontSize="18" Margin="0,0,0,10" FontWeight="DemiBold" HorizontalAlignment="left" Content="By Pct: "  Grid.Column="4"></Label>
+                        <CheckBox IsThreeState="False" x:Name="byPct" Checked="byPct_Checked" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,10" ToolTip="Sampling data by a fix percentage" Grid.Column="5"></CheckBox>
+                    </Grid>
+                    <Label FontSize="18" Margin="15,0,10,10" FontWeight="DemiBold" HorizontalAlignment="left" Content="Elements to calculate: "></Label>
+                    <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Margin="10,0,0,10">
+                        <TreeView x:Name="itemForSelection" Height="auto" MinHeight="600" MaxHeight="400" Margin="0,0,0,20">
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate ItemsSource="{Binding Children}" >
+                                    <CheckBox FontFamily="arial" FontSize="14" Content="{Binding Data}" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></CheckBox>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                            <!--                   
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="TreeViewItem">
+                                    <Setter Property="Visibility" Value="{Binding IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Style>
+                            </TreeView.ItemContainerStyle> 
+                            -->
+                        </TreeView>
+                    </ScrollViewer>
+                    <Button x:Name="runButton" Content="Calculate" Click="runButton_Click" FontSize="18" Margin="0,0,0,10" Width="100" Height="25" HorizontalAlignment="Center" VerticalContentAlignment="Center"></Button>
+                </StackPanel>
+            </TabItem>
+            <TabItem x:Name="result" Header="Result">
+                <StackPanel Orientation="Vertical" MinWidth="600">
+                    <Label FontSize="18" Margin="10" FontWeight="DemiBold" HorizontalAlignment="left" Content="The calculation result for project: "></Label>
+                    <StackPanel Orientation="Horizontal">
+                        <Label FontSize="16" Margin="20,0,10,10" HorizontalAlignment="left" Content="Project name being tested"></Label>
+                        <Button Content="Min" x:Name="min" Margin="30,5,5,10" Click="Button_Click"></Button>
+                        <Button Content="Max" x:Name="max" Margin="0,5,5,10" Click="Button_Click"></Button>
+                        <Button Content="Avg" x:Name="Avg" Margin="0,5,5,10" Click="Button_Click"></Button>
+                        <Button Content="SD" x:Name="SD" Margin="0,5,5,10" Click="Button_Click"></Button>
+                        <Button Content="A1-A3" x:Name="A1_A3" Margin="20,5,5,10" Click="Button_Click"></Button>
+                        <Button Content="A4" x:Name="A4" Margin="0,5,5,10" Click="Button_Click"></Button>
+                        <Button Content="A5" x:Name="A5" Margin="0,5,5,10" Click="Button_Click"></Button>
+                        <Button Content="All Stages" x:Name="all_Stages" Margin="0,5,5,10" Click="Button_Click"></Button>
+                        <Button Content="Total" x:Name="total" Margin="0,5,0,10" Click="Button_Click"></Button>
+                    </StackPanel>
+                    <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Margin="10,0,0,10">
+                        <ListView x:Name="resultTable" Height="450" MinWidth="560">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Ele Name" Width="100" DisplayMemberBinding="{Binding Uid}">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Value, StringFormat=0.###E+0}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="GWP" Width="50" DisplayMemberBinding="{Binding GWP}">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Value, StringFormat=0.###E+0}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="ODP" Width="50" DisplayMemberBinding="{Binding ODP}">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Value, StringFormat=0.###E+0}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="AP" Width="50" DisplayMemberBinding="{Binding AP}">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Value, StringFormat=0.###E+0}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="EP" Width="50" DisplayMemberBinding="{Binding EP}">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Value, StringFormat=0.###E+0}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="POCP" Width="50" DisplayMemberBinding="{Binding POCP}">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Value, StringFormat=0.###E+0}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="ADPE" Width="50" DisplayMemberBinding="{Binding ADPE}">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Value, StringFormat=0.###E+0}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="ADPF" Width="50" DisplayMemberBinding="{Binding ADPF}">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Value, StringFormat=0.###E+0}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="PERT" Width="50" DisplayMemberBinding="{Binding PERT}">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Value, StringFormat=0.###E+0}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="PENRT" Width="50" DisplayMemberBinding="{Binding PENRT}">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Value, StringFormat=0.###E+0}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </ScrollViewer>
+                    <Button x:Name="reportButton" Content="Show Report" FontSize="18" Margin="0,0,0,10" Width="150" Height="25" HorizontalAlignment="Center" VerticalContentAlignment="Center" Click="reportButton_Click"></Button>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>
